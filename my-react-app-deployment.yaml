@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: react-k8-container
-          image: ganesh2soft/my-react-app:v1
+          image: ganesh2soft/my-react-app:latest
           ports:
             - containerPort: 81
