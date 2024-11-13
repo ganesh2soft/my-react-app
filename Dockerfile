@@ -23,7 +23,7 @@ FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Expose port 80 (default for Nginx)
-EXPOSE 80
+#EXPOSE 80
 
 # Start Nginx to serve the build files
 CMD ["nginx", "-g", "daemon off;"]
