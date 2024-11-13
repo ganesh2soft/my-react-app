@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: my-react-app-service
 spec:
-  selector:
-    app: my-react-app
+  type: NodePort  # This allows nodePort to work
   ports:
-    - protocol: TCP
-      port: 80      # Port exposed on the Service
-      targetPort: 80  # Port the container is listening on
-      nodePort: 30007
+    - port: 80            # Expose port 80 on the Service
+      targetPort: 80       # Ensure this matches the container's exposed port
+      nodePort: 30007      # Expose this port on the node for external access
+  selector:
+    app: my-react-app       # Match the label of the deployed pods
