@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-react-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-react-app
+  template:
+    metadata:
+      labels:
+        app: my-react-app
+    spec:
+      containers:
+        - name: react-k8-container
+          image: ganesh2soft/my-react-app:v1
+          ports:
+            - containerPort: 81
