@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: my-react-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: my-react-app
@@ -13,7 +13,9 @@ spec:
         app: my-react-app
     spec:
       containers:
-        - name: react-k8-container
-          image: ganesh2soft/my-react-app:latest
-          ports:
-            - containerPort: 80
+      - name: react-k8-container
+        image: ganesh2soft/my-react-app:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+            
