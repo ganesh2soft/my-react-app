@@ -23,7 +23,10 @@ FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Expose port 80 (default for Nginx)
-#EXPOSE 80
+EXPOSE 80
+
+# Custom Nginx config for React Router support (if needed)
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Start Nginx to serve the build files
 CMD ["nginx", "-g", "daemon off;"]
