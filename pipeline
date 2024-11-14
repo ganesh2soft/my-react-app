@@ -1,0 +1,90 @@
+pipeline {
+    agent any  // Or specify a specific agent like 'node'
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the code inside the 'my-react-app' subfolder
+                dir('my-react-app') {
+                    git url: 'https://github.com/ganesh2soft/my-react-app.git', branch: 'main'
+                }
+            }
+        }
+
+        // Build React app
+        stage('Build React App') {
+            steps {
+                script 
+                  //  dir('my-react-app') 
+                   {
+                        // Build the React app (this creates the build/ directory)
+                        bat "dir"
+                        bat "npm install"
+                        bat "npm run build"
+                        bat "dir"
+                    }
+                
+            }
+        }
+
+
+        
+
+        stage('Build Docker image') {
+            steps {
+                script {
+                    dir('my-react-app') {
+                        bat "docker build -t ganesh2soft/my-react-app:latest ."
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    dir('my-react-app') {
+                        bat "minikube delete"
+                        bat "minikube start"
+                        bat "minikube image load ganesh2soft/my-react-app:latest"
+                        bat "kubectl apply -f my-react-app-deployment.yaml"
+                        bat "kubectl apply -f my-react-app-service.yaml"
+                        bat "kubectl get pods"
+                        bat "kubectl get services"
+                        bat "minikube addons enable dashboard"
+                        bat "minikube stop"
+                        bat "minikube start"
+                        bat "kubectl cluster-info"
+                    }
+                }
+            }
+        }
+
+        stage('Parallel Loading of Services and Dashboard') {
+            parallel {
+                stage('Run minikube dashboard') {
+                    steps {
+                        script {
+                            dir('my-react-app') {
+                                bat "minikube addons enable metrics-server"
+                                bat 'minikube dashboard'
+                                echo 'Dashboard command completed'
+                            }
+                        }
+                    }
+                }
+
+                stage('Run minikube service') {
+                    steps {
+                        script {
+                            dir('my-react-app') {
+                                bat "minikube service --all"
+                                echo 'Service command completed'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
