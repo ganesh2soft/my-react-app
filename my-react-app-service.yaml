@@ -9,6 +9,6 @@ spec:
     - protocol: TCP
       port: 80            # Expose port 80 on the Service
       targetPort: 80       # Ensure this matches the container's exposed port
-      nodePort: 30007      # Expose this port on the node for external access
+            # Expose this port on the node for external access
   type: NodePort
   
